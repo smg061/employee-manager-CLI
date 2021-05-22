@@ -1,28 +1,33 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql');
 const connection = require('./config/connection')
-const dotenv = require('dotenv');
-const {readEmployees, readDepartments, getEmployees, returnEmployeeArray, getDepartments, returnDepartmentArray} = require('./util/queries');
+const {readEmployees, readDepartments, returnEmployeeArray, returnDepartmentArray} = require('./util/queries');
 
-connection.connect((err)=> { 
-    if(err) throw err;
- })
+const {addEmployeePrompt, updateEmployeePrompt} = require('./util/prompts');
 
+
+// the employee list and employee roles are read into these arrays after calling the 
+let employeeList = [];
+let employeeRoles = [];
+
+// main menu prompt object
  let mainMenuPrompt = [
     {
       type:"rawlist",
       message: "What to do?",
       name: "selection",
-      choices: ["View departments", "View employees"]
+      choices: ["View departments", "View employees", "Add department", "Add employee", "Update employee"]
     }
   ]
 
+// connect to the database
+connection.connect((err)=> { 
+    if(err) throw err;
+ })
 
 async function mainPrompt()
 {
-  let employeeList = await returnDepartmentArray(); 
-  console.log(employeeList);
-  //console.clear();
+  
   inquirer.prompt(mainMenuPrompt)
     .then((answer) => 
     {
@@ -30,13 +35,17 @@ async function mainPrompt()
       {
         case "View departments":
           readDepartments();
-          connection.end();
           break;
         case "View employees":
           readEmployees();
-          connection.end();
           break;
-        
+        case "Add employee":
+          addEmployeePrompt();
+          break;
+        case "Update employee":
+          updateEmployeePrompt();
+          break;
+
         default:
             console.log("NO valid option selected")
             break;
@@ -44,10 +53,4 @@ async function mainPrompt()
     })
 }
 
-async function main()
-{
-    await mainPrompt();
-
-}
-
-main();
+mainPrompt();

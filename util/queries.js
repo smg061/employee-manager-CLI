@@ -1,11 +1,13 @@
 const connection = require('../config/connection');
 
 
-// optional parameter return array populates an array if provided
+// simple query to log all employees
 const readEmployees = () => {
-    let query = 'SELECT e.employee_id, first_name, last_name, title, manager_id, name as department FROM employee e ';
-    query+= 'JOIN role r ON e.role_id = r.id ';
-    query+='JOIN department d ON r.department_id = d.id ORDER BY first_name'
+    let query = `SELECT e.employee_id, first_name, last_name, title, manager_id,
+     (SELECT CONCAT(first_name, ' ', last_name) FROM employee e2 WHERE e.manager_id = e2.employee_id) AS manager_name,
+      salary, name as department FROM employee e `;
+    query+= `JOIN role r ON e.role_id = r.id `;
+    query+=`JOIN department d ON r.department_id = d.id ORDER BY first_name`
 
     connection.query(query, (err, res) => {
         if (err) throw err;
@@ -14,31 +16,62 @@ const readEmployees = () => {
     });
  };
 
-function getEmployees() {
+// this function returns the query as an object using a promise
+function getEmployees() 
+{
     query = "SELECT first_name, last_name FROM employee"
     return new Promise(function(resolve, reject){
       connection.query(query, (err, res) =>{                                                
-              if(res === undefined)
-              {
+              if(res === undefined) {
+              
                   reject(new Error("Error rows is undefined"));
               }
-              else
-              {
+              else {
+              
                   resolve(res);
               }
           }
       )}
   )}
 
+// this function uses the previous function to read the returned query promise into an array and return it to be usable
 async function returnEmployeeArray()
-  {
+{
       let employeeArray = [];
-      retrievedEmployee = await getEmployees();
+      let retrievedEmployee = await getEmployees();
       retrievedEmployee.forEach(item => employeeArray.push(`${item.first_name} ${item.last_name}`));
       return employeeArray;
-  }
+}
 
-  
+
+// this function is a more general version of getEmployees() function; the query must be provided as a parameter
+const getSQLQuery = (query) => 
+{
+  return new Promise((resolve, reject) => 
+  {
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+      if (res === undefined) {
+        reject(new Error("Error: data is undefined"))
+      }
+      else {
+        resolve(res);
+      }
+    })
+  })
+}
+
+// more generic version of the returnEmployeesArray() function
+const returnQueryAsArray = async (query) => 
+{
+  let returnArray = [];
+  let retrievedData = await getSQLQuery(query);
+  retrievedData.forEach(item => returnArray.push(item));
+  return returnArray;
+}
+
+
+// simple query to display all departments
 const readDepartments = () => {
     let query = 'SELECT * from department ORDER BY id ';
     connection.query(query, (err, res) => {
@@ -50,16 +83,16 @@ const readDepartments = () => {
  };
 
 
-function getDepartments(){
+
+// the two functions below are basically the same as the getEmployees() and returnEmployeeArray() duo but for departments
+function getDepartments() {
     query = "SELECT name  FROM department"
     return new Promise(function(resolve, reject){
       connection.query(query, (err, res) =>{                                                
-              if(res === undefined)
-              {
-                  reject(new Error("Error rows is undefined"));
+              if(res === undefined) {
+                  reject(new Error("Error: data is undefined"));
               }
-              else
-              {
+              else {
                   resolve(res);
               }
           }
@@ -75,73 +108,4 @@ async function returnDepartmentArray()
   }
 
 
-const findSongsByArtist = () => 
-{
-  inquirer.prompt([
-    {
-      type:"input",
-      message: "Search songs by which artist? ",
-      name: "artist", 
-    }
-  ])
-  .then(({artist}) =>
-  {
-    console.log(`----------------------------------\nSearching songs by ${artist}...\n----------------------------------`)
-    const query = `SELECT song, raw_total FROM topsongs WHERE?`
-    connection.query(query, {artist: artist}, (err, res) => 
-    {
-      if (err) throw err;
-      res.forEach(item => console.log(item["song"], item["raw_total"]))
-    })
-    connection.end();
-})
-}
-
-const findAlbumsByArtist = () => 
-{
-  inquirer.prompt([
-    {
-      type:"input",
-      message: "Search Albums by which artist? ",
-      name: "artist",
-    }
-  ])
-  .then(({artist}) =>
-  {
-    console.log(`----------------------------------\nSearching albums by ${artist}...\n----------------------------------`)
-    const query = `SELECT album FROM topalbums WHERE?`;
-    connection.query(query, {artist: artist}, (err, res)=> 
-    {
-      if (err) throw err;
-      res.forEach(item => console.log(item["album"]))
-    });
-    connection.end();
-})
-}
-
-const findSongAndAlbumByArtist = () => 
-{
-  inquirer.prompt([
-    {
-      type:"input",
-      message: "Search songs and albums by which artist? ",
-      name: "artist",
-    }
-  ])
-  .then(({artist}) => 
-  {
-    console.log(`----------------------------------\nSearching songs & albums by ${artist}...\n----------------------------------`)
-    let query = `SELECT ts.artist, song, album FROM topsongs ts INNER JOIN topalbums ta`;
-    query += ` ON ts.artist = ta.artist WHERE?`;
-    connection.query(query, {"ts.artist": artist}, (err, res) => 
-    {
-      if(err) console.log("Could not search your query. Please try again");
-      if(res.length == 0) console.log("No items found for your query");
-      res.forEach(item => console.log(`song: ${item.song}\nalbum: ${item.album}`));
-    });
-    connection.end();
-  });
-
-}
-
-module.exports = {readEmployees, readDepartments, getEmployees, returnEmployeeArray, getDepartments, returnDepartmentArray};
+module.exports = {readEmployees, readDepartments, returnEmployeeArray, returnDepartmentArray, returnQueryAsArray};
