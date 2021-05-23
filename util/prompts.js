@@ -88,7 +88,7 @@ async function updateEmployeePrompt()
     inquirer.prompt(updateEmployeeQuestions)
     .then(answers => {
         // foreign keys make these queries require references to the tables taht host the foreign keys (I think!)
-        let query = `UPDATE employee SET role_id = (SELECT id FROM role WHERE title = '${answers.newRole}') WHERE first_name = '${answers.name}'`
+        let query = `UPDATE employee SET role_id = (SELECT id FROM role WHERE title = '${answers.newRole}') WHERE CONCAT(first_name, ' ', last_name) = '${answers.name}'`
         connection.query(query, (err, res) => {
             if (err) throw err;
             console.log("Employee role updated successfully");
