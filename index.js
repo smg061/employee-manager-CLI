@@ -1,14 +1,9 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql');
 const connection = require('./config/connection')
-const {readEmployees, readDepartments, returnEmployeeArray, returnDepartmentArray} = require('./util/queries');
+const {readEmployees, readDepartments } = require('./util/queries');
+const {addEmployeePrompt, updateEmployeePrompt, addDepartmentPrompt, viewEmployeeByManager, updateManagerPrompt} = require('./util/prompts');
 
-const {addEmployeePrompt, updateEmployeePrompt} = require('./util/prompts');
-
-
-// the employee list and employee roles are read into these arrays after calling the 
-let employeeList = [];
-let employeeRoles = [];
 
 // main menu prompt object
  let mainMenuPrompt = [
@@ -16,7 +11,7 @@ let employeeRoles = [];
       type:"rawlist",
       message: "What to do?",
       name: "selection",
-      choices: ["View departments", "View employees", "Add department", "Add employee", "Update employee"]
+      choices: ["View departments", "View employees", "Add department", "Add employee", "Update an employee's role", "View Employees by manager", "Update an employee's manager", "Exit"]
     }
   ]
 
@@ -27,10 +22,10 @@ connection.connect((err)=> {
 
 async function mainPrompt()
 {
-  
-  inquirer.prompt(mainMenuPrompt)
+  await inquirer.prompt(mainMenuPrompt)
     .then((answer) => 
     {
+      console.clear();
       switch(answer.selection)
       {
         case "View departments":
@@ -42,15 +37,34 @@ async function mainPrompt()
         case "Add employee":
           addEmployeePrompt();
           break;
-        case "Update employee":
+        case "Update an employee's role":
           updateEmployeePrompt();
           break;
-
+        case "Add department":
+          addDepartmentPrompt();
+          break;
+        case "View Employees by manager":
+          viewEmployeeByManager();
+          break;
+        case "Update an employee's manager":
+          updateManagerPrompt();
+          break;
+        case "Exit":
+          connection.end();
+          break;
         default:
-            console.log("NO valid option selected")
-            break;
+          console.log("No valid option selected");
+          mainPrompt();
+          break;
       }
     })
+    mainPrompt();
 }
 
-mainPrompt();
+async function main()
+{
+  await mainPrompt();
+}
+
+
+main();

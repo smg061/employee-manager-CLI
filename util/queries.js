@@ -2,19 +2,20 @@ const connection = require('../config/connection');
 
 
 // simple query to log all employees
-const readEmployees = () => {
+const readEmployees = async () => {
     let query = `SELECT e.employee_id, first_name, last_name, title, manager_id,
      (SELECT CONCAT(first_name, ' ', last_name) FROM employee e2 WHERE e.manager_id = e2.employee_id) AS manager_name,
       salary, name as department FROM employee e `;
     query+= `JOIN role r ON e.role_id = r.id `;
     query+=`JOIN department d ON r.department_id = d.id ORDER BY first_name`
 
-    connection.query(query, (err, res) => {
+    await connection.query(query, (err, res) => {
         if (err) throw err;
         // Log all results of the SELECT statement
         console.table(res);
     });
  };
+
 
 // this function returns the query as an object using a promise
 function getEmployees() 
@@ -72,13 +73,12 @@ const returnQueryAsArray = async (query) =>
 
 
 // simple query to display all departments
-const readDepartments = () => {
+const readDepartments = async () => {
     let query = 'SELECT * from department ORDER BY id ';
-    connection.query(query, (err, res) => {
+    await connection.query(query, (err, res) => {
       if (err) throw err;
       // Log all results of the SELECT statement
       console.table(res);
-      connection.end();
     });
  };
 
