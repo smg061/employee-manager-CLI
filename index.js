@@ -22,7 +22,7 @@ connection.connect((err)=> {
 
 async function mainPrompt()
 {
-  await inquirer.prompt(mainMenuPrompt)
+  inquirer.prompt(mainMenuPrompt)
     .then((answer) => 
     {
       console.clear();
@@ -57,14 +57,8 @@ async function mainPrompt()
           mainPrompt();
           break;
       }
-    })
-    mainPrompt();
-}
-
-async function main()
-{
-  await mainPrompt();
+    })   
 }
 
 
-main();
+mainPrompt();

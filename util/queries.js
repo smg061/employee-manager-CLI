@@ -13,6 +13,7 @@ const readEmployees = async () => {
         if (err) throw err;
         // Log all results of the SELECT statement
         console.table(res);
+        connection.end();
     });
  };
 
@@ -79,6 +80,7 @@ const readDepartments = async () => {
       if (err) throw err;
       // Log all results of the SELECT statement
       console.table(res);
+      connection.end();
     });
  };
 

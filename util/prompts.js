@@ -60,6 +60,7 @@ async function addEmployeePrompt()
         connection.query(query, (err, res) => {
             if (err) throw err;
             console.log("Employee added successfully!")
+            connection.end();
         })
     });
 }
@@ -91,6 +92,7 @@ async function updateEmployeePrompt()
         connection.query(query, (err, res) => {
             if (err) throw err;
             console.log("Employee role updated successfully");
+            connection.end();
         })
     });
 }
@@ -113,6 +115,7 @@ async function addDepartmentPrompt()
         connection.query(query, (err, res) => {
             if (err) throw err;
             console.log("Department added successfully");
+            connection.end();
         })
     });
 }
@@ -142,6 +145,7 @@ async function viewEmployeeByManager()
             else {
                 res.forEach(item => {console.log(item.name)})
             }
+            connection.end();
         })
     })
 }
@@ -174,6 +178,7 @@ async function updateManagerPrompt()
         connection.query(query, (err , res) => {
             if (err) throw err;
             console.log("Manager updated succesfully");
+            connection.end();
         })
     })
     
