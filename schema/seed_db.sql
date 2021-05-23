@@ -19,10 +19,12 @@ INSERT INTO role(title, salary, department_id) VALUES
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES
 ("John", "Doe", (SELECT id from role WHERE id=1), null),
-("Jane", "Smith", (SELECT id from role WHERE id=1), (SELECT t1.employee_id FROM employee t1 WHERE t1.employee_id = 1)),
+("Jane", "Smith", (SELECT id from role WHERE id=1), null),
 ("Jake", "Flores", (SELECT id from role WHERE id=2),(SELECT t1.employee_id FROM employee t1 WHERE t1.employee_id = 2)),
 ("Carlos", "Bodega", (SELECT id from role WHERE id=3),(SELECT t1.employee_id FROM employee t1 WHERE t1.employee_id = 1)),
-("Kate", "Porter", (SELECT id from role WHERE id=5),(SELECT t1.employee_id FROM employee t1 WHERE t1.employee_id = 2)),
-("Donovan", "Kallinsky", (SELECT id from role WHERE id=6),(SELECT t1.employee_id FROM employee t1 WHERE t1.employee_id = 2)),
-("Miguel", "Torres", (SELECT id from role WHERE id=7),(SELECT t1.employee_id FROM employee t1 WHERE t1.employee_id = 1)),
-("Gonzalo", "Fernandez", (SELECT id from role WHERE title='Senior Developer'), null);
+("Kate", "Porter", (SELECT id from role WHERE id=5),(SELECT t1.employee_id FROM employee t1 WHERE t1.employee_id = 2));
+SELECT * from employee;
+
+
+
+
