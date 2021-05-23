@@ -15,10 +15,15 @@ This project uses mySQL and inquirer to create a command line interface that all
 
 ## Installation Instructions <a name="installation"></a>
 Clone the git repository and install the dependencies using ```npm install```. Then create and seed the database with the files in the db/ folder. Finally run index.js to start the application.
-![img](https://github.com/smg061/employee-manager-CLI/blob/main/img/2021-05-22%2023_31_33-MINGW64__c_Users_smg061_Desktop_working_directory_12-MySQL_employee-manager-CLI.jpg?raw=true)
+
 
 
 ## Usage <a name="usage"></a>
+
+### Main prompt
+All the functions of the app are accessible through the main prompt. Users can add, view, and update departments and employees through the appropriate options:
+![img](https://github.com/smg061/employee-manager-CLI/blob/main/img/2021-05-22%2023_31_33-MINGW64__c_Users_smg061_Desktop_working_directory_12-MySQL_employee-manager-CLI.jpg?raw=true)
+
 * Viewing employees and departments
 
 ![img](https://github.com/smg061/employee-manager-CLI/blob/main/img/2021-05-22%2023_31_46-MINGW64__c_Users_smg061_Desktop_working_directory_12-MySQL_employee-manager-CLI.jpg?raw=true)
