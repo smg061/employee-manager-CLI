@@ -25,7 +25,10 @@ Clone the git repository and install the dependencies using ```npm install```. T
 
 ![image](https://user-images.githubusercontent.com/47426171/119248485-168fbe00-bb57-11eb-8c13-300bb089de49.png)
 
-![image](https://user-images.githubusercontent.com/47426171/119248497-1f808f80-bb57-11eb-8588-4aa276613848.png))
+![image](https://user-images.githubusercontent.com/47426171/119248497-1f808f80-bb57-11eb-8588-4aa276613848.png)
+
+
+
 
 A demonstration of the app can be found here: https://www.youtube.com/watch?v=ww7YHBfTQk4
 
