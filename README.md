@@ -36,4 +36,4 @@ A demonstration of the app can be found here: https://www.youtube.com/watch?v=ww
 ## Questions <a name="questions"></a>
 My Github profile can be found [here](https://github.com/smg061). 
 You can reach me at: max.go.95@gmail.com
-## License <a name="license"></a>
+
