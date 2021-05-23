@@ -33,14 +33,6 @@ Clone the git repository and install the dependencies using ```npm install```. T
 A demonstration of the app can be found here: https://www.youtube.com/watch?v=ww7YHBfTQk4
 
 
-## Usage Information <a name="usage"></a>
-
-
-## Constribution Guidelines <a name="contributing"></a>
-
-
-## Testing Instructions <a name="tests"></a>
-
 ## Questions <a name="questions"></a>
 My Github profile can be found [here](https://github.com/smg061). 
 You can reach me at: max.go.95@gmail.com
